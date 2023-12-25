@@ -8,11 +8,11 @@ export default {
         widescreen: { min: "780px" },
       },
       colors: {
-        primary: "",
-        secondary: "",
-        background: "#000",
+        primary: "#FFEC19",
+        secondary: "#FF862F",
+        background: "#000000",
         foreground: "",
-        front: "#fff",
+        front: "#FFFFFF",
         back: "",
       },
       borderRadius: {

@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Dropdown from "./Dropdown";
 
 interface ContainerProps {
   children?: React.ReactNode;
   onSubmit?: (data: Record<string, string>) => void;
+  clearAfterSubmit?: boolean;
 }
 
 //Form implementation by @marsian83 (https://github.com/marsian83)
@@ -12,10 +13,12 @@ function Container(
     Omit<React.FormHTMLAttributes<HTMLFormElement>, "onSubmit">
 ) {
   const [data, setData] = useState<Record<string, string>>({});
+  const formRef = useRef() as React.MutableRefObject<HTMLFormElement>;
 
   function submitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     props.onSubmit && props.onSubmit(data);
+    if (props.clearAfterSubmit) formRef.current.reset();
   }
 
   return (

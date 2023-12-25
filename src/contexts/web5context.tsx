@@ -6,11 +6,13 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { ProtocolDefinition, DateSort } from "../types";
 
 interface Web5ContextType {
   client: Web5 | undefined;
   userId: string | undefined;
   loading: boolean;
+  configureProtocol(protocolDefinition: ProtocolDefinition): Promise<void>;
 }
 
 const Web3Context = createContext<Web5ContextType>({} as Web5ContextType);
@@ -30,13 +32,42 @@ export function Web5Provider({ children }: { children: React.ReactNode }) {
     setLoading(false);
   }
 
+  async function configureProtocol(protocolDefinition: ProtocolDefinition) {
+    if (!client || !userId) return;
+
+    const { protocols, status } = await client.dwn.protocols.query({
+      message: {
+        filter: {
+          protocol: protocolDefinition.protocol,
+        },
+      },
+    });
+
+    if (status.code !== 200) {
+      alert("Error querying protocols");
+      return;
+    }
+    if (protocols.length > 0) {
+      return;
+    }
+
+    const { status: configureStatus, protocol } =
+      await client.dwn.protocols.configure({
+        message: {
+          definition: protocolDefinition,
+        },
+      });
+
+    protocol?.send(userId);
+  }
+
   useEffect(() => {
     if (flag.current) return;
     setup();
     flag.current = true;
   }, []);
 
-  const value: Web5ContextType = { client, userId, loading };
+  const value: Web5ContextType = { client, userId, loading, configureProtocol };
 
   return <Web3Context.Provider value={value}>{children}</Web3Context.Provider>;
 }
