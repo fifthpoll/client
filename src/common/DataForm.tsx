@@ -22,7 +22,7 @@ function Container(
   }
 
   return (
-    <form {...props} onSubmit={submitHandler}>
+    <form {...props} onSubmit={submitHandler} ref={formRef}>
       <MappedInputs setData={setData}>{props.children}</MappedInputs>
     </form>
   );

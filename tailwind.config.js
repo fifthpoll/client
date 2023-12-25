@@ -10,9 +10,9 @@ export default {
       colors: {
         primary: "#FFEC19",
         secondary: "#FF862F",
-        background: "#000000",
+        background: "#FFFFFF",
         foreground: "",
-        front: "#FFFFFF",
+        front: "#1a1a1a",
         back: "",
       },
       borderRadius: {

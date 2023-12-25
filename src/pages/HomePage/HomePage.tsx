@@ -34,6 +34,7 @@ export default function HomePage() {
             });
             userPublishedEvents.refetch();
           }}
+          clearAfterSubmit
         >
           <DataForm.Input name="name" />
           <DataForm.Input name="date" type="date" className="w-[50vw]" />

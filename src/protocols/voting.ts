@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useWeb5 from "../contexts/web5context";
 import { hasContextLoaded } from "../utils";
 import useSafeEffect from "../hooks/useSafeEffect";
@@ -49,7 +49,10 @@ function getUserPublishedEvents() {
         },
       });
 
-      for (let record of records || []) {
+      if (!records) throw new Error("unable to fetch records");
+
+      setEvents([]);
+      for (let record of records) {
         const rec = await record.data.json();
         setEvents((p) => [...p, rec]);
       }
@@ -90,7 +93,7 @@ function getPublishEventAction() {
     });
 
     if (!record) throw new Error("Failed record");
-    record.send(web5.userId);
+    await record.send(web5.userId);
 
     const data = await record.data.json();
     callack && callack(data);
@@ -131,13 +134,9 @@ function getEventsPublishedByDid(did: string) {
     }
   }
 
-  useSafeEffect(
-    () => {
-      loadData();
-    },
-    [web5.loading],
-    () => hasContextLoaded(web5)
-  );
+  useEffect(() => {
+    loadData();
+  }, [web5.loading, did]);
 
   return { data: events, isLoading: loading, refetch: loadData } as const;
 }
