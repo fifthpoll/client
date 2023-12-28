@@ -21,7 +21,7 @@ export type Event = EventBase &
   (
     | {
         type: VotingType.Singular;
-        votes: Record<string, number>;
+        votes: Record<string, { title: string; votes: number }>;
         currentWinningOutcome: { uid: string; votes: number };
         voters?: { count: number } | { ids: string[] };
         canRecast?: boolean;

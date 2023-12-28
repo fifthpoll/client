@@ -37,7 +37,7 @@ export default function HomePage() {
           clearAfterSubmit
         >
           <DataForm.Input name="name" />
-          <DataForm.Input name="date" type="date" className="w-[50vw]" />
+          <DataForm.Input name="date" type="date" />
           <DataForm.Input name="uid" minLength={3} maxLength={5} />
 
           <DataForm.Input

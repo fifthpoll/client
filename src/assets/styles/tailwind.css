@@ -15,7 +15,14 @@
   textarea {
     @apply bg-transparent border;
   }
+
+  input[type="submit"] {
+    @apply cursor-pointer;
+  }
 }
 
 @layer utilities {
+  .p-page {
+    @apply px-[3vw];
+  }
 }
