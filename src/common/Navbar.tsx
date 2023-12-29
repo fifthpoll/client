@@ -19,6 +19,7 @@ export default function Navbar() {
 
       <div className="flex-1 flex items-center justify-center gap-x-10">
         <CustomNavbarLink to="/" title="Home" />
+        <CustomNavbarLink to="/profile" title="Dashboard" />
         <CustomNavbarLink to="/about" title="About Us" />
       </div>
 

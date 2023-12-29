@@ -26,6 +26,11 @@ export type Event = EventBase &
         voters?: { count: number } | { ids: string[] };
         canRecast?: boolean;
       }
-    | {}
-    | {}
+    | {
+        type: VotingType.Weighted;
+        votes: Record<string, { title: string; votes: number }>;
+        currentWinningOutcome: { uid: string; votes: number };
+        voters?: { count: number } | { ids: string[] };
+        canRecast?: boolean;
+      }
   );

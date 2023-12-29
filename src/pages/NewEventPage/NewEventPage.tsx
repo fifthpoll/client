@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DataForm from "../../common/DataForm";
 import voting from "../../protocols/voting";
 import { twMerge } from "tailwind-merge";
-import { Event } from "../../types";
+import { Event, VotingType } from "../../types";
 import useModal from "../../hooks/useModal";
 
 const fields: Parameters<typeof DataForm.Input>[0][] = [
@@ -64,9 +64,10 @@ export default function NewEventPage() {
             (o) => (votes[o.uid] = { title: o.title, votes: 0 })
           );
           const newEvent: Event = {
+            type: VotingType.Singular,
             metadata: {
               name: data.name,
-              uid: data.uid,
+              uid: data.uid.toUpperCase(),
               description: data.description,
             },
             createdAt: new Date().getTime(),
