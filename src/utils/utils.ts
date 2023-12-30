@@ -144,3 +144,45 @@ export function hasContextLoaded<T extends { loading: boolean }>(
 ): context is { [K in keyof T]-?: NonNullable<T[K]> } & { loading: true } {
   return !context.loading;
 }
+
+export function getRandomLightColorArray(n: number): string[] {
+  const lightColors = [
+    "#FAD02E",
+    "#AED581",
+    "#FFCC80",
+    "#B3E0FF",
+    "#FFD180",
+    "#D1C4E9",
+    "#FFF59D",
+    "#80DEEA",
+    "#FFCDD2",
+    "#C5CAE9",
+  ];
+  const result: string[] = [];
+
+  if (n <= lightColors.length) {
+    const shuffledColors = lightColors.slice().sort(() => Math.random() - 0.5);
+    return shuffledColors.slice(0, n);
+  }
+
+  const remainingColors = n - lightColors.length;
+
+  for (let i = 0; i < lightColors.length; i++) {
+    result.push(lightColors[i]);
+  }
+
+  for (let i = 0; i < remainingColors; i++) {
+    const randomColor = getRandomColor();
+    if (!result.includes(randomColor)) {
+      result.push(randomColor);
+    } else {
+      i--;
+    }
+  }
+
+  return result;
+}
+
+export function getRandomColor(): string {
+  return "#" + Math.floor(Math.random() * 16777215).toString(16);
+}
