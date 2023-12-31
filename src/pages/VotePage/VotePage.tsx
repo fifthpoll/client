@@ -7,7 +7,12 @@ import useModal from "../../hooks/useModal";
 import { Event } from "../../types";
 import { Pie } from "react-chartjs-2";
 import { ArcElement, Chart, Legend, Tooltip } from "chart.js";
-import { getObjectKeys, getRandomLightColorArray } from "../../utils";
+import {
+  getObjectKeys,
+  getRandomLightColorArray,
+  hasContextLoaded,
+} from "../../utils";
+import useWeb5 from "../../contexts/web5context";
 
 export default function VotePage() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -94,11 +99,24 @@ export default function VotePage() {
 function EventDetails(props: { event: Event; author: string }) {
   const { event } = props;
   const [loading, setLoading] = useState(false);
+  const [userVotedFor, setUserVotedFor] = useState("");
 
   Chart.register(ArcElement, Tooltip, Legend);
 
   const modal = useModal();
   const castVote = voting.getCastVoteAction();
+
+  const web5 = useWeb5();
+
+  useEffect(() => {
+    if (!hasContextLoaded(web5)) return;
+
+    const o = getObjectKeys(event.votes).filter((key) =>
+      event.votes[key].votes.includes(web5.userId)
+    )[0];
+
+    setUserVotedFor(o);
+  }, []);
 
   return (
     <div className="bg-background rounded-lg flex flex-col gap-y-3 w-[40vw]">
@@ -146,6 +164,11 @@ function EventDetails(props: { event: Event; author: string }) {
               {event.currentWinningOutcome.uid} is winning with{" "}
               {event.currentWinningOutcome.votes} votes
             </p>
+
+            <p className="mt-5 text-lg">
+              <span className="text-secondary text-xl mr-1">{">"}</span>
+              You have voted for {userVotedFor}
+            </p>
           </div>
         </div>
       )}
@@ -154,30 +177,32 @@ function EventDetails(props: { event: Event; author: string }) {
         <h1 className="pl-4 pt-4 pb-2 text-lg font-light text-primary">
           Cast your vote :
         </h1>
-        {getObjectKeys(event.votes).map((outcome, key) => (
-          <div
-            key={key}
-            className="flex p-4 items-center border-b border-front border-opacity-20"
-          >
-            <h1 className="w-[17%] text-xl">{outcome}</h1>
-            <h2 className="flex-1 text-sm text-front text-opacity-80">
-              {event.votes[outcome].title}
-            </h2>
-            <button
-              disabled={loading}
-              className="bg-green-500 text-white px-6 py-2 rounded ml-4 duration-300 hover:bg-green-800 hover:text-emerald-300 disabled:cursor-not-allowed 
-              disabled:opacity-50"
-              onClick={async () => {
-                setLoading(true);
-                await castVote(props.author, event.id, outcome);
-                setLoading(false);
-                location.reload();
-              }}
+        <div className="h-[25vh] overflow-y-scroll">
+          {getObjectKeys(event.votes).map((outcome, key) => (
+            <div
+              key={key}
+              className="flex p-4 items-center border-b border-front border-opacity-20"
             >
-              Vote
-            </button>
-          </div>
-        ))}
+              <h1 className="w-[17%] text-xl">{outcome}</h1>
+              <h2 className="flex-1 text-sm text-front text-opacity-80">
+                {event.votes[outcome].title}
+              </h2>
+              <button
+                disabled={loading}
+                className="bg-green-500 text-white px-6 py-2 rounded ml-4 duration-300 hover:bg-green-800 hover:text-emerald-300 disabled:cursor-not-allowed 
+              disabled:opacity-50"
+                onClick={async () => {
+                  setLoading(true);
+                  await castVote(props.author, event.id, outcome);
+                  setLoading(false);
+                  modal.hide();
+                }}
+              >
+                Vote
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
