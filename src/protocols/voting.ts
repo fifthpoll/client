@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import useWeb5 from "../contexts/web5context";
-import { hasContextLoaded } from "../utils";
+import { getObjectKeys, hasContextLoaded } from "../utils";
 import useSafeEffect from "../hooks/useSafeEffect";
 import { DateSort, Event } from "../types";
 
 const definition = {
-  protocol: "https://protocols.marsian.dev/voting",
+  protocol: "https://api.npoint.io/a9e92a866c3bbc2a03d9",
   published: true,
   types: {
     event: {
@@ -23,6 +23,10 @@ const definition = {
         {
           who: "anyone",
           can: "write",
+        },
+        {
+          who: "anyone",
+          can: "edit",
         },
       ],
     },
@@ -54,7 +58,7 @@ function getUserPublishedEvents() {
       setEvents([]);
       for (let record of records) {
         const rec = await record.data.json();
-        setEvents((p) => [...p, rec]);
+        setEvents((p) => [...p, { ...rec, id: record.id } as any]);
       }
     } finally {
       setLoading(false);
@@ -96,6 +100,7 @@ function getPublishEventAction() {
     await record.send(web5.userId);
 
     const data = await record.data.json();
+
     callack && callack(data);
   }
 
@@ -128,7 +133,7 @@ function getEventsPublishedByDid(did: string) {
       setEvents([]);
       for (let record of records || []) {
         const rec = await record.data.json();
-        setEvents((p) => [...p, rec]);
+        setEvents((p) => [...p, { ...rec, id: record.id } as any]);
       }
     } finally {
       setLoading(false);
@@ -142,9 +147,65 @@ function getEventsPublishedByDid(did: string) {
   return { data: events, isLoading: loading, refetch: loadData } as const;
 }
 
+function getCastVoteAction() {
+  const web5 = useWeb5();
+
+  async function castVote(
+    eventPublishedDid: string,
+    recordId: string,
+    outcomeId: string
+  ) {
+    if (!hasContextLoaded(web5)) return;
+
+    const { record } = await web5.client.dwn.records.read({
+      from: eventPublishedDid,
+      message: { filter: { recordId } },
+    });
+
+    const data = (await record.data.json()) as Event;
+
+    let newData = JSON.parse(JSON.stringify(data)) as typeof data;
+
+    getObjectKeys(newData.votes).forEach(
+      (key) =>
+        (newData.votes[key].votes = data.votes[key].votes.filter(
+          (v) => v != web5.userId
+        ))
+    );
+
+    newData.votes = {
+      ...newData.votes,
+      [outcomeId]: {
+        ...newData.votes[outcomeId],
+        votes: [...newData.votes[outcomeId].votes, web5.userId],
+      },
+    };
+
+    let currWin = { uid: "", votes: 0 };
+
+    getObjectKeys(newData.votes).forEach((key) => {
+      if (newData.votes[key].votes.length >= currWin.votes) {
+        currWin = {
+          uid: key,
+          votes: newData.votes[key].votes.length,
+        };
+      }
+    });
+
+    newData.currentWinningOutcome = currWin;
+
+    await record.update({
+      data: newData,
+    });
+  }
+
+  return castVote;
+}
+
 export default {
   definition,
   getUserPublishedEvents,
   getPublishEventAction,
   getEventsPublishedByDid,
+  getCastVoteAction,
 };

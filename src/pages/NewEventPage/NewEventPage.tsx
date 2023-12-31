@@ -59,9 +59,9 @@ export default function NewEventPage() {
             alert("Please add atleast 2 outcomes");
             throw new Error("Please add atleast 2 outcomes");
           }
-          const votes: Record<string, { title: string; votes: number }> = {};
+          const votes: Record<string, { title: string; votes: string[] }> = {};
           outcomes.forEach(
-            (o) => (votes[o.uid] = { title: o.title, votes: 0 })
+            (o) => (votes[o.uid] = { title: o.title, votes: [] })
           );
           const newEvent: Event = {
             type: VotingType.Singular,

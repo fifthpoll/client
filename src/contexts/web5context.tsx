@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { ProtocolDefinition, DateSort } from "../types";
+import { ProtocolDefinition } from "../types";
 
 interface Web5ContextType {
   client: Web5 | undefined;
@@ -51,12 +51,11 @@ export function Web5Provider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    const { status: configureStatus, protocol } =
-      await client.dwn.protocols.configure({
-        message: {
-          definition: protocolDefinition,
-        },
-      });
+    const { protocol } = await client.dwn.protocols.configure({
+      message: {
+        definition: protocolDefinition,
+      },
+    });
 
     protocol?.send(userId);
   }
