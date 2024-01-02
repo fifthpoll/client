@@ -8,11 +8,13 @@ import { Event } from "../../types";
 import { Pie } from "react-chartjs-2";
 import { ArcElement, Chart, Legend, Tooltip } from "chart.js";
 import {
+  arraySummision,
   getObjectKeys,
   getRandomLightColorArray,
   hasContextLoaded,
 } from "../../utils";
 import useWeb5 from "../../contexts/web5context";
+import { twMerge } from "tailwind-merge";
 
 export default function VotePage() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -26,6 +28,8 @@ export default function VotePage() {
   useEffect(() => {
     navigate(`?did=${did}`);
   }, [did]);
+
+  console.log(events);
 
   return (
     <div className="p-page mt-8">
@@ -118,6 +122,8 @@ function EventDetails(props: { event: Event; author: string }) {
     setUserVotedFor(o);
   }, []);
 
+  const expired = event.expires > Date.now();
+
   return (
     <div className="bg-background rounded-lg flex flex-col gap-y-3 w-[40vw]">
       <div className="flex gap-x-5 items-end px-4 pt-4 border-opacity-30">
@@ -135,6 +141,21 @@ function EventDetails(props: { event: Event; author: string }) {
       </div>
       <p className="px-4 pb-2 text-sm text-front text-opacity-70 border-b border-front border-opacity-30">
         {event.metadata.description}
+      </p>
+
+      <p
+        className={twMerge(
+          "px-4 flex gap-x-2 justify-center",
+          expired ? "text-red-500" : "text-emerald-500"
+        )}
+      >
+        end{expired ? "ed" : "s"}{" "}
+        <span>{new Date(event.expires).toLocaleString()}</span>
+        {!expired && (
+          <>
+            <div className="bg-green-500 rounded-full w-2 h-2 animate-pulse" />
+          </>
+        )}
       </p>
 
       {event.currentWinningOutcome.uid && (
@@ -162,7 +183,17 @@ function EventDetails(props: { event: Event; author: string }) {
             <h1 className="text-xl">Current winner : </h1>
             <p>
               {event.currentWinningOutcome.uid} is winning with{" "}
-              {event.currentWinningOutcome.votes} votes
+              {event.currentWinningOutcome.votes} votes at{" "}
+              <span className="text-xs text-primary font-medium">
+                {100 *
+                  (event.currentWinningOutcome.votes /
+                    arraySummision(
+                      getObjectKeys(event.votes).map(
+                        (k) => event.votes[k].votes.length
+                      )
+                    ))}
+                %
+              </span>
             </p>
 
             <p className="mt-5 text-lg">
@@ -173,37 +204,40 @@ function EventDetails(props: { event: Event; author: string }) {
         </div>
       )}
 
-      <div className="flex flex-col">
-        <h1 className="pl-4 pt-4 pb-2 text-lg font-light text-primary">
-          Cast your vote :
-        </h1>
-        <div className="h-[25vh] overflow-y-scroll">
-          {getObjectKeys(event.votes).map((outcome, key) => (
-            <div
-              key={key}
-              className="flex p-4 items-center border-b border-front border-opacity-20"
-            >
-              <h1 className="w-[17%] text-xl">{outcome}</h1>
-              <h2 className="flex-1 text-sm text-front text-opacity-80">
-                {event.votes[outcome].title}
-              </h2>
-              <button
-                disabled={loading}
-                className="bg-green-500 text-white px-6 py-2 rounded ml-4 duration-300 hover:bg-green-800 hover:text-emerald-300 disabled:cursor-not-allowed 
-              disabled:opacity-50"
-                onClick={async () => {
-                  setLoading(true);
-                  await castVote(props.author, event.id, outcome);
-                  setLoading(false);
-                  modal.hide();
-                }}
+      {!expired && (
+        <div className="flex flex-col">
+          <h1 className="pl-4 pt-4 pb-2 text-lg font-light text-primary">
+            Cast your vote :
+          </h1>
+          <div className="h-[25vh] overflow-y-scroll">
+            {getObjectKeys(event.votes).map((outcome, key) => (
+              <div
+                key={key}
+                className="flex p-4 items-center border-b border-front border-opacity-20"
               >
-                Vote
-              </button>
-            </div>
-          ))}
+                <h1 className="w-[17%] text-xl">{outcome}</h1>
+                <h2 className="flex-1 text-sm text-front text-opacity-80">
+                  {event.votes[outcome].title}
+                </h2>
+                <button
+                  disabled={loading}
+                  className="bg-green-500 text-white px-6 py-2 rounded ml-4 duration-300 hover:bg-green-800 hover:text-emerald-300 disabled:cursor-not-allowed 
+              disabled:opacity-50"
+                  onClick={async () => {
+                    setLoading(true);
+                    event.id &&
+                      (await castVote(props.author, event.id, outcome));
+                    setLoading(false);
+                    modal.hide();
+                  }}
+                >
+                  Vote
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

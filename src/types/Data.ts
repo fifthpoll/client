@@ -7,7 +7,7 @@ export enum VotingType {
 }
 
 interface EventBase {
-  id: string;
+  id?: string;
   metadata: {
     name: string;
     description?: string;

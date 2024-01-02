@@ -31,6 +31,8 @@ const fields: Parameters<typeof DataForm.Input>[0][] = [
     name: "expires",
     required: true,
     type: "datetime-local",
+    min: new Date().toLocaleDateString("fr-ca"),
+    max: (Date.now() + 7 * 365 * 24 * 60 * 60 * 1000).toLocaleString(),
   },
   {
     title: "Allow recasting votes",

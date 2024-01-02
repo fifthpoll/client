@@ -186,3 +186,9 @@ export function getRandomLightColorArray(n: number): string[] {
 export function getRandomColor(): string {
   return "#" + Math.floor(Math.random() * 16777215).toString(16);
 }
+
+export function arraySummision(arr: number[]) {
+  let res = 0;
+  arr.forEach((i) => (res += i));
+  return res;
+}
