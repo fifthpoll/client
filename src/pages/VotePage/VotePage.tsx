@@ -49,6 +49,18 @@ export default function VotePage() {
         />
       </DataForm.Container>
 
+      {!events.isLoading && events.data && events.data.length > 0 && (
+        <div className="p-page mt-10 mb-5 text-center">
+          <h1 className="text-lg">Showing ongoing events by the user</h1>
+          <Link
+            to={`/completed/${did}`}
+            className="text-primary underline hover:no-underline"
+          >
+            If you wish to view past events / results click here
+          </Link>
+        </div>
+      )}
+
       <div className="flex flex-col mt-5">
         {events.isLoading ? (
           <>Loading...</>
