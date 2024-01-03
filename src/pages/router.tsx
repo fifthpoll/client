@@ -9,6 +9,7 @@ import HomePage from "./HomePage/HomePage";
 import ErrorPage from "./ErrorPage/ErrorPage";
 import NewEventPage from "./NewEventPage/NewEventPage";
 import VotePage from "./VotePage/VotePage";
+import CompletedPage from "./CompletedPage/CompletedPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -17,6 +18,7 @@ const router = createBrowserRouter(
         <Route index element={<HomePage />} />
         <Route path="new" element={<NewEventPage />} />
         <Route path="vote" element={<VotePage />} />
+        <Route path="completed/:did" element={<CompletedPage />} />
       </Route>
 
       <Route path="*" element={<ErrorPage />} />

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import voting from "../../protocols/voting";
 import DataForm from "../../common/DataForm";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Icon from "../../common/Icon";
 import useModal from "../../hooks/useModal";
 import { Event } from "../../types";
@@ -74,34 +74,36 @@ export default function VotePage() {
                   Events by {did}
                 </h2>
                 <div className="flex flex-wrap gap-4">
-                  {events.data.map((event, key) => (
-                    <>
-                      <button
-                        className="w-[calc(20%_-_13px)] relative rounded border border-front border-opacity-30 duration-300 shadow p-4 flex text-left group hover:border-opacity-100"
-                        key={key}
-                        onClick={() =>
-                          modal.show(
-                            <EventDetails event={event} author={did} />
-                          )
-                        }
-                      >
-                        <Icon
-                          icon="open_in_new"
-                          className="duration-300 absolute top-0 right-0 translate-x-1/2 group-hover:-translate-y-1/2 opacity-0 group-hover:opacity-100 translate-y-1/4 p-1 text-3xl
+                  {events.data
+                    .filter((d) => d.expires < Date.now())
+                    .map((event, key) => (
+                      <>
+                        <button
+                          className="w-[calc(20%_-_13px)] relative rounded border border-front border-opacity-30 duration-300 shadow p-4 flex text-left group hover:border-opacity-100"
+                          key={key}
+                          onClick={() =>
+                            modal.show(
+                              <EventDetails event={event} author={did} />
+                            )
+                          }
+                        >
+                          <Icon
+                            icon="open_in_new"
+                            className="duration-300 absolute top-0 right-0 translate-x-1/2 group-hover:-translate-y-1/2 opacity-0 group-hover:opacity-100 translate-y-1/4 p-1 text-3xl
                            rounded-full bg-background text-front border border-front"
-                        />
-                        <div className="flex flex-col justify-center gap-y-3 w-[6em]">
-                          <h2 className="text-3xl uppercase font-light">
-                            {event.metadata.uid}
-                          </h2>
+                          />
+                          <div className="flex flex-col justify-center gap-y-3 w-[6em]">
+                            <h2 className="text-3xl uppercase font-light">
+                              {event.metadata.uid}
+                            </h2>
 
-                          <p className="text-sm text-front text-opacity-70">
-                            {event.metadata.name}
-                          </p>
-                        </div>
-                      </button>
-                    </>
-                  ))}
+                            <p className="text-sm text-front text-opacity-70">
+                              {event.metadata.name}
+                            </p>
+                          </div>
+                        </button>
+                      </>
+                    ))}
                 </div>
               </>
             )}
@@ -209,12 +211,18 @@ function EventDetails(props: { event: Event; author: string }) {
             </p>
 
             <p className="mt-5 text-lg">
-              <span className="text-secondary text-xl mr-1">{">"}</span>
-              You have voted for {userVotedFor}
+              <span className="text-secondary text-xl mr-1 select-none">
+                {">"}
+              </span>
+              {userVotedFor
+                ? `You have voted for ${userVotedFor}`
+                : "You have not voted"}
             </p>
           </div>
         </div>
       )}
+
+      {!event.currentWinningOutcome.uid && <p></p>}
 
       {!expired && (
         <div className="flex flex-col">
