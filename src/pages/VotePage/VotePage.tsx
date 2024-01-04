@@ -4,17 +4,6 @@ import DataForm from "../../common/DataForm";
 import { Link, useNavigate } from "react-router-dom";
 import Icon from "../../common/Icon";
 import useModal from "../../hooks/useModal";
-import { Event } from "../../types";
-import { Pie } from "react-chartjs-2";
-import { ArcElement, Chart, Legend, Tooltip } from "chart.js";
-import {
-  arraySummision,
-  getObjectKeys,
-  getRandomLightColorArray,
-  hasContextLoaded,
-} from "../../utils";
-import useWeb5 from "../../contexts/web5context";
-import { twMerge } from "tailwind-merge";
 import EventDetails from "../../common/EventDetails";
 
 export default function VotePage() {
