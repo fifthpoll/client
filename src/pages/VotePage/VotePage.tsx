@@ -65,7 +65,7 @@ export default function VotePage() {
                 </h2>
                 <div className="flex flex-wrap gap-4">
                   {events.data
-                    .filter((d) => d.expires < Date.now())
+                    .filter((d) => d.expires > Date.now())
                     .map((event, key) => (
                       // <>
                       <button
