@@ -24,10 +24,6 @@ const definition = {
           who: "anyone",
           can: "write",
         },
-        {
-          who: "anyone",
-          can: "edit",
-        },
       ],
     },
   },
