@@ -19,7 +19,13 @@ export default function VotePage() {
     navigate(`?did=${did}`);
   }, [did]);
 
-  console.log(events);
+  useEffect(() => {
+    if (events.data && events.data.length > 0) {
+      window.scrollTo({ top: window.innerHeight });
+    }
+  }, [events.data]);
+
+  console.log(events.data);
 
   return (
     <div className="mt-8 flex items-center flex-col">

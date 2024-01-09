@@ -9,11 +9,11 @@ export default function Navbar() {
   return (
     <nav className="flex p-page py-4">
       <Link to="/" className="flex h-10 group duration-300">
-        <img
+        {/* <img
           src="/logo.png"
           alt="logo"
           className="duration-inherit group-hover:scale-110 group-hover:translate-x-3"
-        />
+        /> */}
         <img
           src="/branding.png"
           alt="logo"
@@ -29,10 +29,10 @@ export default function Navbar() {
 
       <div className="flex gap-x-5">
         <Link
-          to="/vote"
+          to="/actions"
           className="bg-foreground text-back px-6 rounded-full flex justify-center items-center"
         >
-          Cast Vote
+          Get Started
         </Link>
         <button
           onClick={() => {

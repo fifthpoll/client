@@ -2,6 +2,7 @@ import React from "react";
 import Icon, { IconType } from "../../../common/Icon";
 import { twMerge } from "tailwind-merge";
 import useModal from "../../../hooks/useModal";
+import { Link } from "react-router-dom";
 
 const features: { title: string; content: string[]; icon: IconType }[] = [
   {
@@ -51,12 +52,18 @@ export default function Hero() {
           </h1>
 
           <div className="mt-8 mb-32 flex gap-x-10">
-            <button className="bg-foreground text-back px-10 py-3 rounded-full">
+            <Link
+              to="/actions"
+              className="bg-foreground text-back px-10 py-3 rounded-full"
+            >
               Get Started
-            </button>
-            <button className="underline underline-offset-8">
+            </Link>
+            <Link
+              to="/completed/null"
+              className="flex justify-center items-center underline underline-offset-8"
+            >
               View Results
-            </button>
+            </Link>
           </div>
 
           <div className="mb-10">
@@ -98,10 +105,12 @@ export default function Hero() {
               )}
               onClick={() => {
                 modal.show(
-                  <div className="bg-background p-8 rounded-lg shadow-md">
-                    <h1>{feature.title}</h1>
+                  <div className="bg-background p-8 rounded-lg shadow-md flex flex-col items-center gap-y-4">
+                    <h1 className="text-xl font-medium tracking-tighter">
+                      {feature.title}
+                    </h1>
                     {feature.content.map((item, i) => (
-                      <p>{item}</p>
+                      <p key={i}>{item}</p>
                     ))}
                   </div>
                 );

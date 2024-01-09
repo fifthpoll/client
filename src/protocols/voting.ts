@@ -135,6 +135,9 @@ function getEventsPublishedByDid(did: string) {
         const rec = await record.data.json();
         setEvents((p) => [...p, { ...rec, id: record.id } as any]);
       }
+    } catch (err) {
+      console.error(err);
+      setEvents([]);
     } finally {
       setLoading(false);
     }
