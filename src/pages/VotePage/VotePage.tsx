@@ -22,23 +22,64 @@ export default function VotePage() {
   console.log(events);
 
   return (
-    <div className="p-page mt-8">
+    <div className="p-page mt-8 flex items-center flex-col">
+      <div className="text-4xl flex flex-col items-center gap-y-2 font-semibold tracking-tight">
+        <span>Cast your vote now &</span>
+        <span>make a difference</span>
+      </div>
+      <div className="flex mt-12">
+        <div className="w-[20%] mr-[4.2rem] flex flex-col justify-between">
+          <div className="">
+            <div className="text-3xl font-bold mb-3">Every Vote</div>
+            <div className="text-sm">
+              can make a difference in the result and some more randome words
+              which make sense
+            </div>
+          </div>
+          <div className="">
+            <div className="text-3xl font-bold mb-3">70%</div>
+            <div className="text-sm">
+              people in india don't vote because of aalas
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <img
+              src="https://avatars.githubusercontent.com/u/96080203?v=4"
+              className="w-[25%] rounded-full border-2 border-white"
+            />
+            <img
+              src="https://avatars.githubusercontent.com/u/114365550?v=4"
+              className="w-[25%] rounded-full -translate-y-4 border-2 border-white"
+            />
+            <div className="-translate-y-2 font-bold">The creators</div>
+          </div>
+        </div>
+        <img src="/cast-vote.png" alt="cast" className="w-[50%]" />
+        <div className="w-[24%] pl-8">
+          <div>
+            <div className="w-[6vw] bg-lime-400 h-[22vh] absolute -z-1"/>
+            <div className="pb-2 border-b-2 border-black w-[20vw] font-semibold text-xl pt-8 ml-4">Types of Voting</div>
+            <div className="pt-4 text-sm w-[18vw] ml-4">Do you know there are 5 different types of voting, and soon we will have them all.</div>
+          </div>
+        </div>
+      </div>
       <DataForm.Container
         onSubmit={(data) => setDid(data.did)}
-        className="flex gap-x-2"
+        className="flex gap-x-4 mt-8 w-full justify-center"
       >
         <DataForm.Input
           name="did"
           required
           minLength={8}
-          className="border border-front border-opacity-30 p-1 rounded"
+          className="border-2 border-front border-opacity-60 px-4 py-4 rounded-2xl w-[70%] text-xl font-light"
+          placeholder="Enter the DID of the person who started the event"
         />
         <DataForm.Input
           type="submit"
-          className="bg-foreground text-back px-8 rounded"
+          className="bg-foreground text-back px-8 rounded-2xl text-[1.10rem]"
         />
       </DataForm.Container>
-
+      {/* 
       {!events.isLoading && events.data && events.data.length > 0 && (
         <div className="p-page mt-10 mb-5 text-center">
           <h1 className="text-lg">Showing ongoing events by the user</h1>
@@ -99,7 +140,7 @@ export default function VotePage() {
             )}
           </>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }
