@@ -109,9 +109,19 @@ export default function Hero() {
                     <h1 className="text-xl font-medium tracking-tighter">
                       {feature.title}
                     </h1>
-                    {feature.content.map((item, i) => (
-                      <p key={i}>{item}</p>
-                    ))}
+                    <div className="">
+                      {feature.content.map((item, i) => (
+                        <p key={i} className="flex items-center gap-x-1">
+                          <span className="text-2xl">•</span> {item}
+                        </p>
+                      ))}
+                    </div>
+                    <button
+                      className="bg-foreground mt-4 px-8 py-2 rounded text-back shadow-md"
+                      onClick={() => modal.hide()}
+                    >
+                      Okay
+                    </button>
                   </div>
                 );
               }}
