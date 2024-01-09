@@ -1,7 +1,11 @@
 import { Link, NavLink } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
+import Icon from "./Icon";
+import useWeb5 from "../contexts/web5context";
 
 export default function Navbar() {
+  const web5 = useWeb5();
+
   return (
     <nav className="flex p-page py-4">
       <Link to="/" className="flex h-10 group duration-300">
@@ -26,16 +30,27 @@ export default function Navbar() {
       <div className="flex gap-x-5">
         <Link
           to="/vote"
-          className="bg-primary text-back px-6 rounded-full flex justify-center items-center"
+          className="bg-foreground text-back px-6 rounded-full flex justify-center items-center"
         >
           Cast Vote
         </Link>
-        <Link
-          to="/new"
-          className="bg-black text-white px-6 rounded-full flex justify-center items-center"
+        <button
+          onClick={() => {
+            if (web5 && web5.userId) {
+              navigator.clipboard.writeText(web5.userId);
+              alert("Did copied to clipboard");
+            } else {
+              alert("Error, please try again");
+            }
+          }}
+          className="border border-foreground px-5 gap-x-2 rounded-full flex justify-center items-center group duration-300 hover:bg-foreground hover:text-back"
         >
-          Start Event
-        </Link>
+          <Icon
+            icon="copyContent"
+            className="group-hover:scale-150 duration-200 group-hover:text-back"
+          />
+          Copy Did
+        </button>
       </div>
     </nav>
   );
