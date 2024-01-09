@@ -9,11 +9,6 @@ export default function Navbar() {
   return (
     <nav className="flex p-page py-4">
       <Link to="/" className="flex h-10 group duration-300">
-        {/* <img
-          src="/logo.png"
-          alt="logo"
-          className="duration-inherit group-hover:scale-110 group-hover:translate-x-3"
-        /> */}
         <img
           src="/branding.png"
           alt="logo"
@@ -23,7 +18,10 @@ export default function Navbar() {
 
       <div className="flex-1 flex items-center justify-center gap-x-10">
         <CustomNavbarLink to="/" title="Home" />
-        <CustomNavbarLink to="/profile" title="Dashboard" />
+        <CustomNavbarLink
+          to={`/completed/${web5.userId}`}
+          title="Your Results"
+        />
         <CustomNavbarLink to="/about" title="About Us" />
       </div>
 

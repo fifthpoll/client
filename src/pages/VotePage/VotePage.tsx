@@ -5,12 +5,16 @@ import { Link, useNavigate } from "react-router-dom";
 import Icon from "../../common/Icon";
 import useModal from "../../hooks/useModal";
 import EventDetails from "../../common/EventDetails";
+import dummyEvent from "../../assets/data/dummyEvent";
 
 export default function VotePage() {
   const urlParams = new URLSearchParams(window.location.search);
   const [did, setDid] = useState(urlParams.get("did") || "none");
 
-  const events = voting.getEventsPublishedByDid(did);
+  const events =
+    /*{ data: [dummyEvent], isLoading: false };*/ voting.getEventsPublishedByDid(
+      did
+    );
 
   const modal = useModal();
   const navigate = useNavigate();
@@ -24,8 +28,6 @@ export default function VotePage() {
       window.scrollTo({ top: window.innerHeight });
     }
   }, [events.data]);
-
-  console.log(events.data);
 
   return (
     <div className="mt-8 flex items-center flex-col">
