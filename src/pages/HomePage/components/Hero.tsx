@@ -97,6 +97,7 @@ export default function Hero() {
         <div className="flex flex-col mt-12">
           {features.map((feature, key) => (
             <div
+              key={key}
               className={twMerge(
                 `flex gap-x-3 px-5 py-4 items-center cursor-pointer relative before:absolute before:w-0 before:top-0 before:left-0 before:h-full hover:before:w-full before:bg-foreground before:-z-1
                 duration-150 hover:duration-300 before:duration-inherit hover:text-back`,
