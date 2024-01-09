@@ -117,13 +117,19 @@ export default function VotePage() {
                 </div>
               ) : (
                 <div className="bg-black bg-opacity-[3%] p-page pb-16">
-                  <div className="my-8">
-                    <h2 className="text-3xl tracking-tighter font-medium">
-                      Showing ongoing Events by
-                    </h2>
-                    <p className="whitespace-nowrap truncate w-[80vw] mt-2 border-2 p-4 rounded-xl bg-white text-lg font-light">
-                      {did}
-                    </p>
+                  <div className="my-8 flex justify-between">
+                    <div className="w-[80vw]">
+                      <h2 className="text-3xl tracking-tighter font-medium">
+                        Showing ongoing Events by
+                      </h2>
+                      <p className="whitespace-nowrap truncate mt-2 border-2 p-4 rounded-xl bg-white text-lg font-light">
+                        {did}
+                      </p>
+                    </div>
+                    <Icon
+                      icon="info"
+                      className="text-black"
+                    />
                   </div>
                   <div className="flex flex-wrap gap-4 mt-12">
                     {events.data
