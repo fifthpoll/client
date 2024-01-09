@@ -10,6 +10,7 @@ import ErrorPage from "./ErrorPage/ErrorPage";
 import NewEventPage from "./NewEventPage/NewEventPage";
 import VotePage from "./VotePage/VotePage";
 import CompletedPage from "./CompletedPage/CompletedPage";
+import ActionsPage from "./ActionsPage/ActionsPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,6 +20,7 @@ const router = createBrowserRouter(
         <Route path="new" element={<NewEventPage />} />
         <Route path="vote" element={<VotePage />} />
         <Route path="completed/:did" element={<CompletedPage />} />
+        <Route path="actions" element={<ActionsPage />} />
       </Route>
 
       <Route path="*" element={<ErrorPage />} />
