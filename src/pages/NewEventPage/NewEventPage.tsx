@@ -54,7 +54,7 @@ export default function NewEventPage() {
 
   const [loading, setLoading] = useState(false);
 
-  const modal = useModal();
+  const { show } = useModal();
 
   return (
     <div className="flex flex-col items-center py-16">
@@ -118,9 +118,7 @@ export default function NewEventPage() {
           type="button"
           className="text-primary underline underline-offset-4 my-2"
           onClick={() => {
-            modal.show(
-              <ModalVotersDefinition votersState={{ voters, setVoters }} />
-            );
+            show(<ModalVotersDefinition votersState={{ voters, setVoters }} />);
           }}
         >
           Who can vote?
@@ -144,7 +142,7 @@ function OutcomesDeclaration(props: {
   >;
 }) {
   const { outcomes, setOutcomes } = props;
-  const modal = useModal();
+  const { show } = useModal();
 
   return (
     <div
@@ -168,7 +166,7 @@ function OutcomesDeclaration(props: {
         className="w-[20vw] flex justify-center items-center border border-front rounded py-5 text-2xl"
         type="button"
         onClick={() => {
-          modal.show(
+          show(
             <ModalNewOutcome
               addFunction={(data) =>
                 setOutcomes((p) => [...p, { uid: data.uid, title: data.title }])
@@ -186,14 +184,14 @@ function OutcomesDeclaration(props: {
 function ModalNewOutcome(props: {
   addFunction: (data: Record<string, string>) => void;
 }) {
-  const modal = useModal();
+  const { show, hide } = useModal();
 
   return (
     <DataForm.Container
       className="bg-background p-5 rounded-lg flex flex-col gap-y-5 w-[30vw]"
       onSubmit={(data) => {
         props.addFunction(data);
-        modal.hide();
+        hide();
       }}
     >
       <h1 className="font-medium text-xl">New Possible Outcome</h1>
@@ -221,7 +219,7 @@ function ModalNewOutcome(props: {
           className="cursor-pointer bg-black text-white basis-1/2 py-2 rounded-md"
         />
         <button
-          onClick={modal.hide}
+          onClick={hide}
           className="cursor-pointer bg-red-600 text-white basis-1/2 py-2 rounded-md"
         >
           Cancel

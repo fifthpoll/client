@@ -10,7 +10,7 @@ export default function CompletedPage() {
   const did = params.did;
   const events = voting.getEventsPublishedByDid(did || "none");
 
-  const modal = useModal();
+  const { show } = useModal();
 
   return (
     <>
@@ -49,9 +49,7 @@ export default function CompletedPage() {
                       className="w-[calc(20%_-_13px)] relative rounded border border-front border-opacity-30 duration-300 shadow p-4 flex text-left group hover:border-opacity-100"
                       key={key}
                       onClick={() =>
-                        modal.show(
-                          <EventDetails event={event} author={did || ""} />
-                        )
+                        show(<EventDetails event={event} author={did || ""} />)
                       }
                     >
                       <Icon
