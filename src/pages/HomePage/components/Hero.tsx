@@ -96,7 +96,16 @@ export default function Hero() {
                 key != features.length - 1 &&
                   "border-b border-front border-opacity-30"
               )}
-              onClick={() => {}}
+              onClick={() => {
+                modal.show(
+                  <div className="bg-background p-8 rounded-lg shadow-md">
+                    <h1>{feature.title}</h1>
+                    {feature.content.map((item, i) => (
+                      <p>{item}</p>
+                    ))}
+                  </div>
+                );
+              }}
             >
               <Icon icon={feature.icon} className="text-xl" />
               <h5>{feature.title}</h5>

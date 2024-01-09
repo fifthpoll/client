@@ -1,0 +1,6 @@
+{
+  "editor.formatOnSave": true,
+  "path-intellisense.mappings": {
+    "/": "${workspaceFolder}/public"
+  }
+}
