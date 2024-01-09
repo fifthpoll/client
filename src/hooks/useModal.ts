@@ -6,7 +6,9 @@ export default function useModal() {
 
   function show(element: ReactNode) {
     console.log("Showing modal with element:", element);
-    console.log(global, global.modalState, global.modalState.setModal);
+    console.log(global);
+    console.log(global.modalState);
+    console.log(global.modalState.setModal);
     if (global && global.modalState && global.modalState.setModal) {
       console.log("Showing modal with element: Inside if", element);
       global.modalState.setModal(element);
