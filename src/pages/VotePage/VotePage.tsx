@@ -32,14 +32,14 @@ export default function VotePage() {
           <div className="">
             <div className="text-3xl font-bold mb-3">Every Vote</div>
             <div className="text-sm">
-              can make a difference in the result and some more randome words
-              which make sense
+              makes a difference in the result and anything existing in the
+              world
             </div>
           </div>
           <div className="">
-            <div className="text-3xl font-bold mb-3">70%</div>
+            <div className="text-3xl font-bold mb-3">36%</div>
             <div className="text-sm">
-              people in india don't vote because of aalas
+              people in the world are too lazy to vote
             </div>
           </div>
           <div className="flex flex-col">
@@ -106,6 +106,15 @@ export default function VotePage() {
             <>
               {events.data.length == 0 ? (
                 <div className="items-center flex flex-col py-8 relative border-t-2 border-black mb-12">
+                  <Link
+                    to={`/completed/${did}`}
+                    className="text-end items-end flex flex-col group cursor-pointer absolute right-8"
+                  >
+                    <Icon icon="info" className="text-black text-4xl" />
+                    <p className="w-[15vw] mt-2 opacity-0 duration-150 ease-in group-hover:opacity-100">
+                      Click to view the past event by this user
+                    </p>
+                  </Link>
                   <div className="h-[0.5vh] w-full bg-black mt-[0.1rem] bg-opacity-20 absolute top-0" />
                   <img
                     src="https://st.depositphotos.com/16203680/53343/v/450/depositphotos_533430192-stock-illustration-sad-cartoon-caricature-exclamation-mark.jpg"
@@ -118,7 +127,7 @@ export default function VotePage() {
               ) : (
                 <div className="bg-black bg-opacity-[3%] p-page pb-16">
                   <div className="my-8 flex justify-between">
-                    <div className="w-[80vw]">
+                    <div className="w-[70vw]">
                       <h2 className="text-3xl tracking-tighter font-medium">
                         Showing ongoing Events by
                       </h2>
@@ -126,10 +135,15 @@ export default function VotePage() {
                         {did}
                       </p>
                     </div>
-                    <Icon
-                      icon="info"
-                      className="text-black"
-                    />
+                    <Link
+                      to={`/completed/${did}`}
+                      className="text-end items-end flex flex-col group cursor-pointer"
+                    >
+                      <Icon icon="info" className="text-black text-4xl" />
+                      <p className="w-[15vw] mt-2 opacity-0 duration-150 ease-in group-hover:opacity-100">
+                        Click to view the past event by this user
+                      </p>
+                    </Link>
                   </div>
                   <div className="flex flex-wrap gap-4 mt-12">
                     {events.data
