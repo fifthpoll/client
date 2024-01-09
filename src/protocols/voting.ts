@@ -12,9 +12,20 @@ const definition = {
       schema: "https://protocols.marsian.dev/voting/metadata.json",
       dataFormats: ["application/json"],
     },
+    voter: {
+      schema: "https://protocols.marsian.dev/voting/metadata.json",
+      dataFormats: ["application/json"],
+    },
+    vote: {
+      schema: "https://protocols.marsian.dev/voting/metadata.json",
+      dataFormats: ["application/json"],
+    },
   },
   structure: {
     event: {
+      voter: {
+        $contextRole: true,
+      },
       $actions: [
         {
           who: "anyone",
@@ -29,6 +40,22 @@ const definition = {
           can: "update",
         },
       ],
+      vote: {
+        $actions: [
+          {
+            who: "anyone",
+            can: "read",
+          },
+          {
+            role: "event/voter",
+            can: "update",
+          },
+          {
+            role: "event/voter",
+            can: "write",
+          },
+        ],
+      },
     },
   },
 };
@@ -79,7 +106,11 @@ function getUserPublishedEvents() {
 function getPublishEventAction() {
   const web5 = useWeb5();
 
-  async function publish(event: Event, callack?: (data: any) => void) {
+  async function publish(
+    event: Event,
+    voters: string[],
+    callack?: (data: any) => void
+  ) {
     if (!hasContextLoaded(web5)) return;
 
     const { record } = await web5.client.dwn.records.create({
@@ -100,6 +131,26 @@ function getPublishEventAction() {
     await record.send(web5.userId);
 
     const data = await record.data.json();
+    const eventId = record.id;
+
+    for (let voter of voters) {
+      const { record } = await web5.client.dwn.records.create({
+        data: "Voter",
+        message: {
+          contextId: eventId,
+          parentId: eventId,
+          protocol: definition.protocol,
+          protocolPath: "event/voter",
+          schema: definition.types.voter.schema,
+          published: true,
+          dataFormat: "application/json",
+          recipient: voter,
+        },
+      });
+
+      await record?.send(web5.userId);
+      await record?.send(voter);
+    }
 
     callack && callack(data);
   }

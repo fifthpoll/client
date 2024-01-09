@@ -4,6 +4,7 @@ import voting from "../../protocols/voting";
 import { twMerge } from "tailwind-merge";
 import { Event, VotingType } from "../../types";
 import useModal from "../../hooks/useModal";
+import ModalVotersDefinition from "./components/ModalVotersDefinition";
 
 const fields: Parameters<typeof DataForm.Input>[0][] = [
   {
@@ -49,7 +50,11 @@ export default function NewEventPage() {
     []
   );
 
+  const [voters, setVoters] = useState<string[]>([]);
+
   const [loading, setLoading] = useState(false);
+
+  const modal = useModal();
 
   return (
     <div className="flex flex-col items-center py-16">
@@ -80,7 +85,7 @@ export default function NewEventPage() {
           };
           setLoading(true);
           setOutcomes([]);
-          publish(newEvent).then(() => setLoading(false));
+          publish(newEvent, voters).then(() => setLoading(false));
         }}
       >
         <div className="self-center text-xl">Start a new Event</div>
@@ -108,6 +113,18 @@ export default function NewEventPage() {
         ))}
         <h1 className="mt-5 text-center text-lg">Possible Outcomes </h1>
         <OutcomesDeclaration outcomes={outcomes} setOutcomes={setOutcomes} />
+
+        <button
+          type="button"
+          className="text-primary underline underline-offset-4 my-2"
+          onClick={() => {
+            modal.show(
+              <ModalVotersDefinition votersState={{ voters, setVoters }} />
+            );
+          }}
+        >
+          Who can vote?
+        </button>
 
         <DataForm.Input
           type="submit"

@@ -51,14 +51,20 @@ export default function VotePage() {
             </div>
           </div>
           <div className="flex flex-col">
-            <img
-              src="https://avatars.githubusercontent.com/u/96080203?v=4"
-              className="w-[25%] rounded-full border-2 border-white"
-            />
-            <img
-              src="https://avatars.githubusercontent.com/u/114365550?v=4"
-              className="w-[25%] rounded-full -translate-y-4 border-2 border-white"
-            />
+            <Link to="https://linkedin.com/in/jriyyya" target="__blank">
+              <img
+                draggable={false}
+                src="https://avatars.githubusercontent.com/u/96080203?v=4"
+                className="w-[25%] rounded-full border-2 border-white"
+              />
+            </Link>
+            <Link to="https://linkedin.com/in/marsian83" target="__blank">
+              <img
+                draggable={false}
+                src="https://avatars.githubusercontent.com/u/114365550?v=4"
+                className="w-[25%] rounded-full -translate-y-4 border-2 border-white"
+              />
+            </Link>
             <div className="-translate-y-2 font-bold">The creators</div>
           </div>
         </div>
@@ -125,6 +131,7 @@ export default function VotePage() {
                   </Link>
                   <div className="h-[0.5vh] w-full bg-black mt-[0.1rem] bg-opacity-20 absolute top-0" />
                   <img
+                    draggable={false}
                     src="https://st.depositphotos.com/16203680/53343/v/450/depositphotos_533430192-stock-illustration-sad-cartoon-caricature-exclamation-mark.jpg"
                     className="h-[30vh]"
                   />
