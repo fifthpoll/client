@@ -83,6 +83,7 @@ export default function NewEventPage() {
           publish(newEvent).then(() => setLoading(false));
         }}
       >
+        <div className="self-center text-xl">Start a new Event</div>
         {fields.map((item, key) => (
           <div
             className="flex gap-x-5 w-full items-center justify-between"
