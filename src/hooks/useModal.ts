@@ -5,12 +5,16 @@ export default function useModal() {
   const global = useGlobalContext();
 
   function show(element: ReactNode) {
-    global.modalState.setModal(element);
+    if (global && global.modalState && global.modalState.setModal) {
+      global.modalState.setModal(element);
+    }
   }
 
   function hide() {
-    global.modalState.setModal(null);
+    if (global && global.modalState && global.modalState.setModal) {
+      global.modalState.setModal(null);
+    }
   }
 
-  return { element: global.modalState.modal, show, hide };
+  return { element: global?.modalState?.modal, show, hide };
 }
