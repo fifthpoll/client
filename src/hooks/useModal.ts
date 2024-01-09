@@ -2,25 +2,25 @@ import { ReactNode } from "react";
 import useGlobalContext from "../contexts/globalContext";
 
 export default function useModal() {
-  const global = useGlobalContext();
+  const globalC = useGlobalContext();
 
   function show(element: ReactNode) {
     console.log("Showing modal with element:", element);
-    console.log(global);
-    console.log(global.modalState);
-    console.log(global.modalState.setModal);
-    if (global && global.modalState && global.modalState.setModal) {
+    console.log(globalC);
+    console.log(globalC.modalState);
+    console.log(globalC.modalState.setModal);
+    if (globalC && globalC.modalState && globalC.modalState.setModal) {
       console.log("Showing modal with element: Inside if", element);
-      global.modalState.setModal(element);
+      globalC.modalState.setModal(element);
     }
   }
 
   function hide() {
-    if (global && global.modalState && global.modalState.setModal) {
+    if (globalC && globalC.modalState && globalC.modalState.setModal) {
       console.log("Hiding modal");
-      global.modalState.setModal(null);
+      globalC.modalState.setModal(null);
     }
   }
 
-  return { element: global?.modalState?.modal, show, hide };
+  return { element: globalC?.modalState?.modal, show, hide };
 }

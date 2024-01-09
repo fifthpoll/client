@@ -2,10 +2,10 @@ import React, { ReactNode } from "react";
 import useGlobalContext from "../contexts/globalContext";
 
 export default function useModal() {
-  const global = useGlobalContext();
+  const globalC = useGlobalContext();
 
   function clear(element: ReactNode) {
-    global.toastState.setToasts([]);
+    globalC.toastState.setToasts([]);
   }
 
   function add(config: {
@@ -26,16 +26,16 @@ export default function useModal() {
 
     if (newToast == null) throw new Error("Invalid toast description");
 
-    global.toastState.setToasts((p) => [
+    globalC.toastState.setToasts((p) => [
       ...p,
       newToast as NonNullable<typeof newToast>,
     ]);
   }
 
   function close(index: number) {
-    global.toastState.setToasts([
-      ...global.toastState.toasts.slice(0, index),
-      ...global.toastState.toasts.slice(index + 1),
+    globalC.toastState.setToasts([
+      ...globalC.toastState.toasts.slice(0, index),
+      ...globalC.toastState.toasts.slice(index + 1),
     ]);
   }
 
